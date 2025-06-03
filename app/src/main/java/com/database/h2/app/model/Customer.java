@@ -12,16 +12,25 @@ public class Customer {
     @Column(name="CUSTOMER_NUMBER")
     private String customerNumber;
 
-    @Column(name="PASSWORD")
+    @Column(name="CUSTOMER_NAME")
+    private String customerName;
+
+    @Column(name="CUSTOMER_LASTNAME")
+    private String customerLastName;
+
+    @Column(name="CUSTOMER_SESSION")
+    private boolean isSessionAlive;
+
+    @Column(name="CUSTOMER_PASSWORD")
     private String password;
 
-    @Column(name="EMAIL")
+    @Column(name="CUSTOMER_EMAIL")
     private String email;
 
-    @Column(name="STATUS")
+    @Column(name="CUSTOMER_STATUS")
     private String status;
 
-    @Column(name="CREATION")
+    @Column(name="CUSTOMER_CREATION")
     private String creation;
 
     public String getCustomerNumber() {
@@ -64,10 +73,35 @@ public class Customer {
         this.creation = creation;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public String getCustomerLastName() {
+        return customerLastName;
+    }
+
+    public boolean isSessionAlive() {
+        return isSessionAlive;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public void setCustomerLastName(String customerLastName) {
+        this.customerLastName = customerLastName;
+    }
+
+    public void setSessionAlive(boolean isSessionAlive) {
+        this.isSessionAlive = isSessionAlive;
+    }
+
     @Override
     public String toString() {
-        return "Customer [customerNumber=" + customerNumber + ", password=" + password + ", email=" + email
-                + ", status=" + status + ", creation=" + creation + "]";
+        return "Customer [customerNumber=" + customerNumber + ", customerName=" + customerName + ", customerLastName="
+                + customerLastName + ", isSessionAlive=" + isSessionAlive + ", password=" + password + ", email="
+                + email + ", status=" + status + ", creation=" + creation + "]";
     }
 
 
