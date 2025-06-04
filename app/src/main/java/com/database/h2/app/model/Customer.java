@@ -104,6 +104,11 @@ public class Customer {
                 + email + ", status=" + status + ", creation=" + creation + "]";
     }
 
+    public Customer orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
+
 
 
 }

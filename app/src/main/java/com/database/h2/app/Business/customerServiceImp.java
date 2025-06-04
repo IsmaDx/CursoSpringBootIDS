@@ -9,16 +9,15 @@ import org.springframework.stereotype.Service;
 import com.database.h2.app.Repository.CustomerRepository;
 import com.database.h2.app.Service.customerService;
 import com.database.h2.app.View.CustomerDTO;
+import com.database.h2.app.View.customerSession;
 import com.database.h2.app.model.Customer;
 @Service
 public class customerServiceImp implements customerService{
 
     @Autowired 
     private CustomerRepository customerRepository;
-
     //private Function<Customer,CustomerDTO> mapper = this::customerMapper;
     private Function<Customer,CustomerDTO> mapper = customer -> new CustomerDTO(customer.getCustomerName(),customer.getCustomerLastName(),customer.getEmail());
-
     @Override
     public List<CustomerDTO> getCustomers() {
        // return customerRepository.findAll();
