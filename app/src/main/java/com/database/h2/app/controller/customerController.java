@@ -10,18 +10,22 @@ import com.database.h2.app.Service.customerSessionService;
 import com.database.h2.app.View.CustomerDTO;
 import com.database.h2.app.View.customerSession;
 import com.database.h2.app.model.Customer;
+import com.database.h2.app.model.LoginRequestModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -64,23 +68,29 @@ public List<CustomerDTO> getCustomers()
         return customerService.getCustomer(customerNumber);
     }
 
-@GetMapping("/newLogin/{customerNumber}/{customerPassword}")
-//@PostMapping("/newLogin/{customerNumber}/{customerPassword}")
+ //@GetMapping("/newLogin/{customerNumber}/{customerPassword}")
+
     //public customerSession openSession(@PathVariable("customerNumber") String customerNumber,@PathVariable("customerPassword") String customerPassword) throws Exception
-    public ResponseEntity<String> openSession(@PathVariable("customerNumber") String customerNumber,@PathVariable("customerPassword") String customerPassword) throws Exception
+    //public ResponseEntity<String> openSession(@PathVariable("customerNumber") String customerNumber,@PathVariable("customerPassword") String customerPassword) throws Exception
+
+    @PostMapping("/newLogin")
+    public ResponseEntity<String> openSession(@RequestBody LoginRequestModel request) throws Exception
     {
-    customerSession cdata = cSessionService.oSession(customerNumber);
+        if (request.customerNumber.equals("") || request.customerPassword.equals("")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body("Bad Request");
+        }
+    customerSession cdata = cSessionService.oSession(request.customerNumber);
     String usr = cdata.getCustomerNumber();
     String psw= cdata.getCustomerPassword();
     boolean session = cdata.getIsSessionAlive();
-        if(usr.equals(customerNumber) && psw.equals(customerPassword))
+        if(usr.equals(request.customerNumber) && psw.equals(request.customerPassword))
         {   
             if(session == false){
                 
-            Customer customer = cSessionOpenner.findById(customerNumber).orElseThrow(null);
+            Customer customer = cSessionOpenner.findById(request.customerNumber).orElseThrow(null);
             customer.setSessionAlive(true);
             cSessionOpenner.save(customer);
-             
              UUID sesionuuid = UUID.randomUUID();
             return ResponseEntity.ok()
             .header("SesionID", sesionuuid.toString())
