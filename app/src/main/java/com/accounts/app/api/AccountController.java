@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.accounts.app.Service.AccountService;
 import com.accounts.app.model.Account;
+import com.accounts.view.AccountDTO;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +24,7 @@ public class AccountController {
     private AccountService accountService;
     
   @GetMapping("/accounts/{customerNumber}")
-  public Account accountsRetrive(@PathVariable("customerNumber")String customerNumber)
+  public List<AccountDTO> accountsRetrive(@PathVariable("customerNumber")String customerNumber)
   {
     return accountService.getCustomerNumber(customerNumber);
   }
