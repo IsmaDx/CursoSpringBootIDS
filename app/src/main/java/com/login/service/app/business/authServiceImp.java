@@ -5,12 +5,16 @@ import java.util.UUID;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import javax.ws.rs.ForbiddenException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.login.service.app.exception.unauthorizeException;
 import com.login.service.app.model.Customer;
+import com.login.service.app.model.errorResponseModel;
 import com.login.service.app.repository.customerRepository;
 import com.login.service.app.service.authService;
 import com.login.service.app.view.Credentials;
@@ -30,10 +34,12 @@ public class authServiceImp implements authService{
     @Override
     //public boolean authenticate( Credentials credentials) throws Exception {
     public String authenticate( Credentials credentials) throws Exception {
-         Customer customer = cRepository.findById(credentials.getCustomerNumber()).orElseThrow(() -> new Exception("Customer not found"));
+         Customer customer = cRepository.findById(credentials.getCustomerNumber())
+         .orElseThrow(() -> new ForbiddenException("You are not authorized to access this resource"));
         if(customerValidation.test(customer, credentials) &&  customer.isSessionAlive()== false && customer.getStatus().equals("A") )
         {
-           return null;
+          // return null;
+            throw new unauthorizeException("Invalid credentials or session already active");
         }
         else {
         customer.setSessionAlive(true);
